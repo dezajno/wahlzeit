@@ -8,24 +8,17 @@ import java.util.Optional;
  *
  */
 public class Location {
-	protected Optional<Coordinate> coord = Optional.empty();
+	protected final Coordinate coord;
 
 	/**
 	 * Creates a new location with the given coordinate
 	 * @param coord The coordinate of the new location
 	 */
-	public Location(Optional<Coordinate> coord) {
+	public Location(Coordinate coord) {
 		if(coord == null) {
 			throw new IllegalArgumentException("coord may not be null");
 		}
 		this.coord = coord;
-	}
-	
-	/**
-	 * Creates a new location with no coordinate
-	 */
-	public Location() {
-		// NOP
 	}
 	
 	/**
@@ -36,26 +29,15 @@ public class Location {
 		if(other == null) {
 			throw new IllegalArgumentException("other may not be null");
 		}
-		this.setCoord(other.coord);
+		this.coord = other.coord;
 	}
 	
 	/**
 	 * Returns the coordinate of this location
 	 * @return The coordinate of this location
 	 */
-	public Optional<Coordinate> getCoord() {
+	public Coordinate getCoord() {
 		return coord;
-	}
-
-	/**
-	 * Sets the coordinate of this location
-	 * @param coord The new coordinate for this location
-	 */
-	public void setCoord(Optional<Coordinate> coord) {
-		if(coord == null) {
-			throw new IllegalArgumentException("coord may not be null");
-		}
-		this.coord = coord;
 	}
 
 	@Override
