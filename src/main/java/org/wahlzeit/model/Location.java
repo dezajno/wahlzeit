@@ -4,7 +4,6 @@ import java.util.Optional;
 
 /**
  * Represents a location
- * @author dezajno
  *
  */
 public class Location {

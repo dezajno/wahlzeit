@@ -20,13 +20,15 @@
 
 package org.wahlzeit.services;
 
+import org.junit.Test;
+
 import junit.framework.TestCase;
 
 /**
  * Test cases for the EmailAddress class.
  */
 public class EmailAddressTest extends TestCase {
-
+	
 	/**
 	 *
 	 */
@@ -57,6 +59,11 @@ public class EmailAddressTest extends TestCase {
 			// creation failed
 			return false;
 		}
+	}
+	
+	@Test(expected = IllegalArgumentException.class)
+	public void testInvaldEmailAddress() {
+		EmailAddress.getFromString(".invalid@email.com");
 	}
 
 	/**

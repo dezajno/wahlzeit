@@ -49,6 +49,11 @@ public class EmailServiceTest {
 		}
 	}
 
+	@Test(expected = MailingException.class)
+	public void testSendInvalidEmailException() throws MailingException {
+		emailService.sendEmail(validAddress, null, "lol", "lol");
+	}
+
 	@Test
 	public void testSendValidEmail() {
 		try {

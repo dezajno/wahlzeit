@@ -2,7 +2,6 @@ package org.wahlzeit.model;
 
 /**
  * Represents a 2D cartesian coordinate with double precision
- * @author dezajno
  *
  */
 public class Coordinate {
