@@ -20,12 +20,18 @@
 
 package org.wahlzeit.main;
 
-import com.google.appengine.api.images.Image;
-import com.google.appengine.api.images.ImagesServiceFactory;
+import java.io.File;
+import java.io.FileFilter;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.util.logging.Logger;
+
 import org.wahlzeit.model.GlobalsManager;
 import org.wahlzeit.model.Photo;
 import org.wahlzeit.model.PhotoCaseManager;
 import org.wahlzeit.model.PhotoFactory;
+import org.wahlzeit.model.PhotoGlobals;
 import org.wahlzeit.model.PhotoManager;
 import org.wahlzeit.model.User;
 import org.wahlzeit.model.UserManager;
@@ -33,12 +39,8 @@ import org.wahlzeit.model.persistence.DatastoreAdapter;
 import org.wahlzeit.model.persistence.ImageStorage;
 import org.wahlzeit.services.LogBuilder;
 
-import java.io.File;
-import java.io.FileFilter;
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Paths;
-import java.util.logging.Logger;
+import com.google.appengine.api.images.Image;
+import com.google.appengine.api.images.ImagesServiceFactory;
 
 /**
  * A single-threaded Main class with database connection. Can be used by tools that don't want to start a server.
@@ -63,12 +65,8 @@ public abstract class ModelMain extends AbstractMain {
 
 		log.config(LogBuilder.createSystemMessage().addAction("load user").toString());
 		UserManager.getInstance().init();
-
-		log.config(LogBuilder.createSystemMessage().addAction("init PhotoFactory").toString());
-		PhotoFactory.initialize();
-
-		log.config(LogBuilder.createSystemMessage().addAction("load Photos").toString());
-		PhotoManager.getInstance().init();
+		
+		PhotoGlobals.init(new PhotoFactory(), new PhotoManager());
 	}
 
 
@@ -86,7 +84,7 @@ public abstract class ModelMain extends AbstractMain {
 	 */
 	public void saveAll() throws IOException{
 		PhotoCaseManager.getInstance().savePhotoCases();
-		PhotoManager.getInstance().savePhotos();
+		PhotoGlobals.getInstance().getManager().savePhotos();
 		UserManager.getInstance().saveClients();
 		GlobalsManager.getInstance().saveGlobals();
 	}
@@ -98,7 +96,7 @@ public abstract class ModelMain extends AbstractMain {
 		UserManager userManager = UserManager.getInstance();
 		User user = new User(userId, nickName, emailAddress);
 
-		PhotoManager photoManager = PhotoManager.getInstance();
+		PhotoManager photoManager = PhotoGlobals.getInstance().getManager();
 		File photoDirFile = new File(photoDir);
 		FileFilter photoFileFilter = file -> file.getName().endsWith(".jpg");
 		File[] photoFiles = photoDirFile.listFiles(photoFileFilter);

@@ -45,11 +45,6 @@ import java.util.logging.Logger;
  */
 public class PhotoManager extends ObjectManager {
 
-	/**
-	 *
-	 */
-	protected static PhotoManager instance = new PhotoManager();
-
 	private static final Logger log = Logger.getLogger(PhotoManager.class.getName());
 
 	/**
@@ -61,27 +56,23 @@ public class PhotoManager extends ObjectManager {
 	 *
 	 */
 	protected PhotoTagCollector photoTagCollector = null;
+	
+	protected PhotoFactory factory;
 
 	/**
 	 *
 	 */
 	public PhotoManager() {
-		photoTagCollector = PhotoFactory.getInstance().createPhotoTagCollector();
+		
 	}
 
-	private static PhotoManager setup() {
-		return new PhotoManager();
-	}
-	
 	/**
-	 *
+	 * @methodtype init Loads all Photos from the Datastore and holds them in the cache
 	 */
-	public static PhotoManager getInstance() {
-		if(instance == null) {
-			instance = setup();
-		}
-		
-		return instance;
+	void init(PhotoFactory factory) {
+		this.factory = factory;
+		photoTagCollector = factory.createPhotoTagCollector();
+		loadPhotos();
 	}
 
 	/**
@@ -116,7 +107,7 @@ public class PhotoManager extends ObjectManager {
 		Photo result = doGetPhotoFromId(id);
 
 		if (result == null) {
-			result = PhotoFactory.getInstance().loadPhoto(id);
+			result = factory.loadPhoto(id);
 			if (result != null) {
 				doAddPhoto(result);
 			}
@@ -146,13 +137,6 @@ public class PhotoManager extends ObjectManager {
 	 */
 	public final Photo getPhoto(String id) {
 		return getPhoto(PhotoId.getIdFromString(id));
-	}
-
-	/**
-	 * @methodtype init Loads all Photos from the Datastore and holds them in the cache
-	 */
-	public void init() {
-		loadPhotos();
 	}
 
 	/**

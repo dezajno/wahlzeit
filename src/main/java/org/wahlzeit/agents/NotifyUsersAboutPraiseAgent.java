@@ -1,11 +1,16 @@
 package org.wahlzeit.agents;
 
-import com.google.apphosting.api.ApiProxy;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.logging.Logger;
+
 import org.wahlzeit.model.LanguageConfigs;
 import org.wahlzeit.model.ModelConfig;
 import org.wahlzeit.model.Photo;
 import org.wahlzeit.model.PhotoId;
-import org.wahlzeit.model.PhotoManager;
+import org.wahlzeit.model.PhotoGlobals;
 import org.wahlzeit.model.User;
 import org.wahlzeit.model.UserManager;
 import org.wahlzeit.services.EmailAddress;
@@ -13,11 +18,7 @@ import org.wahlzeit.services.LogBuilder;
 import org.wahlzeit.services.mailing.EmailService;
 import org.wahlzeit.services.mailing.EmailServiceManager;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.logging.Logger;
+import com.google.apphosting.api.ApiProxy;
 
 /**
  * An agent class to notify users about new praise received for their photos.
@@ -38,7 +39,7 @@ public class NotifyUsersAboutPraiseAgent extends Agent {
 	 * Notifies all users that want to get informed if their photos have been praised.
 	 */
 	protected void doRun() {
-		Map<PhotoId, Photo> photoCache = PhotoManager.getInstance().getPhotoCache();
+		Map<PhotoId, Photo> photoCache = PhotoGlobals.getInstance().getManager().getPhotoCache();
 		Collection<Photo> photos = photoCache.values();
 
 		ArrayList<Photo> arrayListOfPhotos;
@@ -58,7 +59,7 @@ public class NotifyUsersAboutPraiseAgent extends Agent {
 					arrayListOfPhotos.add(photo);
 					ownerIdPhotosMap.put(ownerId, arrayListOfPhotos);
 					photo.setNoNewPraise();
-					PhotoManager.getInstance().savePhoto(photo);
+					PhotoGlobals.getInstance().getManager().savePhoto(photo);
 				}
 			}
 		}

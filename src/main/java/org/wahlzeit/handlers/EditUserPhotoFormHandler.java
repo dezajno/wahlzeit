@@ -20,20 +20,20 @@
 
 package org.wahlzeit.handlers;
 
+import java.util.Map;
+import java.util.logging.Logger;
+
 import org.wahlzeit.agents.AsyncTaskExecutor;
 import org.wahlzeit.model.AccessRights;
 import org.wahlzeit.model.ModelConfig;
 import org.wahlzeit.model.Photo;
-import org.wahlzeit.model.PhotoManager;
 import org.wahlzeit.model.PhotoStatus;
+import org.wahlzeit.model.PhotoGlobals;
 import org.wahlzeit.model.Tags;
 import org.wahlzeit.model.UserSession;
 import org.wahlzeit.services.LogBuilder;
 import org.wahlzeit.utils.HtmlUtil;
 import org.wahlzeit.webparts.WebPart;
-
-import java.util.Map;
-import java.util.logging.Logger;
 
 /**
  * A handler class for a specific web form.
@@ -66,7 +66,7 @@ public class EditUserPhotoFormHandler extends AbstractWebFormHandler {
 		part.addStringFromArgs(args, UserSession.MESSAGE);
 
 		String id = us.getAsString(args, Photo.ID);
-		Photo photo = PhotoManager.getInstance().getPhoto(id);
+		Photo photo = PhotoGlobals.getInstance().getManager().getPhoto(id);
 
 		part.addString(Photo.ID, id);
 		part.addString(Photo.THUMB, getPhotoThumb(us, photo));
@@ -84,7 +84,7 @@ public class EditUserPhotoFormHandler extends AbstractWebFormHandler {
 	 */
 	protected boolean isWellFormedPost(UserSession us, Map args) {
 		String id = us.getAsString(args, Photo.ID);
-		Photo photo = PhotoManager.getInstance().getPhoto(id);
+		Photo photo = PhotoGlobals.getInstance().getManager().getPhoto(id);
 		return (photo != null) && us.isPhotoOwner(photo);
 	}
 
@@ -93,7 +93,7 @@ public class EditUserPhotoFormHandler extends AbstractWebFormHandler {
 	 */
 	protected String doHandlePost(UserSession us, Map args) {
 		String id = us.getAndSaveAsString(args, Photo.ID);
-		Photo photo = PhotoManager.getInstance().getPhoto(id);
+		Photo photo = PhotoGlobals.getInstance().getManager().getPhoto(id);
 
 		String tags = us.getAndSaveAsString(args, Photo.TAGS);
 		photo.setTags(new Tags(tags));

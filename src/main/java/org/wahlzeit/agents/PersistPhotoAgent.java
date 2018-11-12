@@ -1,15 +1,16 @@
 package org.wahlzeit.agents;
 
-import org.wahlzeit.model.Photo;
-import org.wahlzeit.model.PhotoManager;
-import org.wahlzeit.services.LogBuilder;
+import java.io.IOException;
+import java.util.logging.Logger;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
-import java.util.logging.Logger;
+
+import org.wahlzeit.model.Photo;
+import org.wahlzeit.model.PhotoGlobals;
+import org.wahlzeit.services.LogBuilder;
 
 /**
  * Servlet to persist Photos that are only in the Cache.
@@ -31,9 +32,9 @@ public class PersistPhotoAgent extends HttpServlet {
 		String id = request.getParameter(Photo.ID);
 		log.config(LogBuilder.createSystemMessage().addParameter("Try to persist PhotoId", id).toString());
 		if (id != null && !"".equals(id)) {
-			Photo photo = PhotoManager.getInstance().getPhoto(id);
+			Photo photo = PhotoGlobals.getInstance().getManager().getPhoto(id);
 			if (photo != null) {
-				PhotoManager.getInstance().savePhoto(photo);
+				PhotoGlobals.getInstance().getManager().savePhoto(photo);
 				log.config(LogBuilder.createSystemMessage().addMessage("Photo saved.").toString());
 			} else {
 				response.setStatus(299);

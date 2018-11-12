@@ -20,12 +20,16 @@
 
 package org.wahlzeit.handlers;
 
+import java.io.File;
+import java.util.Map;
+import java.util.logging.Logger;
+
 import org.wahlzeit.model.AccessRights;
 import org.wahlzeit.model.Client;
 import org.wahlzeit.model.ModelConfig;
 import org.wahlzeit.model.Photo;
-import org.wahlzeit.model.PhotoManager;
 import org.wahlzeit.model.PhotoSize;
+import org.wahlzeit.model.PhotoGlobals;
 import org.wahlzeit.model.User;
 import org.wahlzeit.model.UserSession;
 import org.wahlzeit.services.Language;
@@ -36,10 +40,6 @@ import org.wahlzeit.utils.StringUtil;
 import org.wahlzeit.webparts.WebPart;
 import org.wahlzeit.webparts.WebPartTemplate;
 import org.wahlzeit.webparts.WebPartTemplateService;
-
-import java.io.File;
-import java.util.Map;
-import java.util.logging.Logger;
 
 /**
  * A superclass for handling parts of web pages.
@@ -145,7 +145,7 @@ public abstract class AbstractWebPartHandler implements WebPartHandler {
 	 */
 	protected boolean isSavedPhotoVisible(UserSession us) {
 		String id = us.getAsString(us.getSavedArgs(), Photo.ID);
-		Photo photo = PhotoManager.getInstance().getPhoto(id);
+		Photo photo = PhotoGlobals.getInstance().getManager().getPhoto(id);
 		return photo.isVisible();
 	}
 

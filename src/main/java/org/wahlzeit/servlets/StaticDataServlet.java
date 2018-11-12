@@ -1,18 +1,20 @@
 package org.wahlzeit.servlets;
 
-import com.google.appengine.api.images.Image;
-import org.apache.http.HttpStatus;
-import org.wahlzeit.model.Photo;
-import org.wahlzeit.model.PhotoManager;
-import org.wahlzeit.model.PhotoSize;
-import org.wahlzeit.model.persistence.ImageStorage;
-import org.wahlzeit.services.LogBuilder;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.Serializable;
 import java.util.logging.Logger;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import org.apache.http.HttpStatus;
+import org.wahlzeit.model.Photo;
+import org.wahlzeit.model.PhotoSize;
+import org.wahlzeit.model.PhotoGlobals;
+import org.wahlzeit.model.persistence.ImageStorage;
+import org.wahlzeit.services.LogBuilder;
+
+import com.google.appengine.api.images.Image;
 
 /**
  * Servlet that returns static data like the Photos to the user.
@@ -68,7 +70,7 @@ public class StaticDataServlet extends AbstractServlet {
 	 */
 	private Image getImage(String photoId, int size) {
 		Image image = null;
-		Photo photo = PhotoManager.getInstance().getPhoto(photoId);
+		Photo photo = PhotoGlobals.getInstance().getManager().getPhoto(photoId);
 		if (photo != null) {
 			PhotoSize photoSize = PhotoSize.getFromInt(size);
 			image = photo.getImage(photoSize);
