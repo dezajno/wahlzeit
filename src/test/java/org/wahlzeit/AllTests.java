@@ -9,6 +9,7 @@ import org.wahlzeit.model.FlagReasonTest;
 import org.wahlzeit.model.GenderTest;
 import org.wahlzeit.model.GuestTest;
 import org.wahlzeit.model.PhotoFilterTest;
+import org.wahlzeit.model.PhotoGlobalsTest;
 import org.wahlzeit.model.TagsTest;
 import org.wahlzeit.model.UserStatusTest;
 import org.wahlzeit.model.ValueTest;
@@ -38,7 +39,9 @@ import org.wahlzeit.utils.VersionTest;
 	EmailServiceTestSuite.class,
 	
 	StringUtilTest.class,
-	VersionTest.class
+	VersionTest.class,
+	
+	PhotoGlobalsTest.class
 })
 public class AllTests {
 
