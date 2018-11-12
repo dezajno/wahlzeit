@@ -1,11 +1,20 @@
 package org.wahlzeit.handlers;
 
+import static org.junit.Assert.assertTrue;
+
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
+
 import org.junit.Before;
 import org.junit.ClassRule;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.RuleChain;
 import org.junit.rules.TestRule;
+import org.wahlzeit.model.PhotoFactory;
+import org.wahlzeit.model.PhotoGlobals;
+import org.wahlzeit.model.PhotoManager;
 import org.wahlzeit.model.UserSession;
 import org.wahlzeit.services.EmailAddress;
 import org.wahlzeit.services.SessionManager;
@@ -15,12 +24,6 @@ import org.wahlzeit.testEnvironmentProvider.SysConfigProvider;
 import org.wahlzeit.testEnvironmentProvider.UserSessionProvider;
 import org.wahlzeit.testEnvironmentProvider.WebFormHandlerProvider;
 import org.wahlzeit.webparts.WebPart;
-
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Map;
-
-import static org.junit.Assert.assertTrue;
 
 /**
  * Acceptance tests for the TellFriend feature.
@@ -44,6 +47,7 @@ public class TellFriendTest {
 
 	@Before
 	public void setUp() {
+		PhotoGlobals.init(new PhotoFactory(), new PhotoManager());
 		session = (UserSession) SessionManager.getThreadLocalSession();
 		handler = webFormHandlerProvider.getWebFormHandler();
 	}
