@@ -13,11 +13,11 @@ public class LocationTest {
 	
 	@Before
 	public void setup() {
-		Coordinate testCoord = new Coordinate(4.2, 0.1, 3.4);
+		CartesianCoordinate testCoord = new CartesianCoordinate(4.2, 0.1, 3.4);
 		
 		someCoord = new Location(testCoord);
 		someCoordCopied = new Location(someCoord);
-		otherCoordGiven = new Location(Coordinate.ORIGIN);
+		otherCoordGiven = new Location(CartesianCoordinate.ORIGIN);
 	}
 	
 	@Test
@@ -32,7 +32,7 @@ public class LocationTest {
 	
 	@Test(expected = IllegalArgumentException.class)
 	public void testNullCoord() {
-		new Location((Coordinate)null);
+		new Location((CartesianCoordinate)null);
 	}
 	
 	@Test

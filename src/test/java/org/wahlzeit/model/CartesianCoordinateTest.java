@@ -1,34 +1,41 @@
 package org.wahlzeit.model;
 
-import static org.junit.Assert.fail;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 import org.junit.Before;
 import org.junit.Test;
 
-import static org.junit.Assert.*;
-
-public class CartesianCoordinateImplTest {
+public class CartesianCoordinateTest {
 	private static final double DELTA = 0.00000001;
 	
-	private CartesianCoordinateImpl origin;
-	private CartesianCoordinateImpl zero3;
-	private CartesianCoordinateImpl one3;
-	private CartesianCoordinateImpl one3c;
-	private CartesianCoordinateImpl oneTwoThree;
-	private CartesianCoordinateImpl oneTwoFour;
-	private CartesianCoordinateImpl oneTwoTwo;
+	private CartesianCoordinate origin;
+	private CartesianCoordinate zero3;
+	private CartesianCoordinate one3;
+	private CartesianCoordinate one3c;
+	private CartesianCoordinate oneTwoThree;
+	private CartesianCoordinate oneTwoFour;
+	private CartesianCoordinate oneTwoTwo;
+	
+	private CartesianCoordinate x;
+	private CartesianCoordinate y;
+	private CartesianCoordinate z;
 	
 	private Object object;
 	
 	@Before
 	public void setup() {
-		origin = CartesianCoordinateImpl.ORIGIN;
-		zero3 = new CartesianCoordinateImpl(0.0, 0.0, 0.0);
-		one3 = new CartesianCoordinateImpl(1.0, 1.0, 1.0);
-		one3c = new CartesianCoordinateImpl(one3);
-		oneTwoThree = new CartesianCoordinateImpl(1.0, 2.0, 3.0);
-		oneTwoFour = new CartesianCoordinateImpl(1.0, 2.0, 4.0);
-		oneTwoTwo = new CartesianCoordinateImpl(1.0, 2.0, 2.0);
+		origin = CartesianCoordinate.ORIGIN;
+		zero3 = new CartesianCoordinate(0.0, 0.0, 0.0);
+		one3 = new CartesianCoordinate(1.0, 1.0, 1.0);
+		one3c = new CartesianCoordinate(one3);
+		oneTwoThree = new CartesianCoordinate(1.0, 2.0, 3.0);
+		oneTwoFour = new CartesianCoordinate(1.0, 2.0, 4.0);
+		oneTwoTwo = new CartesianCoordinate(1.0, 2.0, 2.0);
+		
+		x = new CartesianCoordinate(1, 0, 0);
+		y = new CartesianCoordinate(0, 1, 0);
+		z = new CartesianCoordinate(0, 0, 1);
 		
 		object = new Object();
 	}
@@ -45,7 +52,7 @@ public class CartesianCoordinateImplTest {
 	
 	@Test(expected = IllegalArgumentException.class)
 	public void testNullCopy() {
-		new CartesianCoordinateImpl(null);
+		new CartesianCoordinate(null);
 	}
 
 	@Test
@@ -100,5 +107,8 @@ public class CartesianCoordinateImplTest {
 	@Test
 	public void testAsSpheric() {
 		assertTrue(origin.asSphericCoordinate() instanceof SphericCoordinate);
+		assertEquals(x, x.asSphericCoordinate().asCartesianCoordinate());
+		assertEquals(y, y.asSphericCoordinate().asCartesianCoordinate());
+		assertEquals(z, z.asSphericCoordinate().asCartesianCoordinate());
 	}
 }

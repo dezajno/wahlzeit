@@ -7,13 +7,13 @@ import java.util.Optional;
  *
  */
 public class Location {
-	protected final Coordinate coord;
+	protected final CartesianCoordinate coord;
 
 	/**
 	 * Creates a new location with the given coordinate
 	 * @param coord The coordinate of the new location
 	 */
-	public Location(Coordinate coord) {
+	public Location(CartesianCoordinate coord) {
 		if(coord == null) {
 			throw new IllegalArgumentException("coord may not be null");
 		}
@@ -35,7 +35,7 @@ public class Location {
 	 * Returns the coordinate of this location
 	 * @return The coordinate of this location
 	 */
-	public Coordinate getCoord() {
+	public CartesianCoordinate getCoord() {
 		return coord;
 	}
 

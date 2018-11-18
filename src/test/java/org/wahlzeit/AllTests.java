@@ -5,11 +5,14 @@ import org.junit.runners.Suite;
 import org.junit.runners.Suite.SuiteClasses;
 import org.wahlzeit.handlers.TellFriendTest;
 import org.wahlzeit.model.AccessRightsTest;
+import org.wahlzeit.model.CartesianCoordinateTest;
 import org.wahlzeit.model.FlagReasonTest;
 import org.wahlzeit.model.GenderTest;
 import org.wahlzeit.model.GuestTest;
+import org.wahlzeit.model.LocationTest;
 import org.wahlzeit.model.PhotoFilterTest;
 import org.wahlzeit.model.PhotoGlobalsTest;
+import org.wahlzeit.model.SphericCoordinateTest;
 import org.wahlzeit.model.TagsTest;
 import org.wahlzeit.model.UserStatusTest;
 import org.wahlzeit.model.ValueTest;
@@ -41,7 +44,11 @@ import org.wahlzeit.utils.VersionTest;
 	StringUtilTest.class,
 	VersionTest.class,
 	
-	PhotoGlobalsTest.class
+	PhotoGlobalsTest.class,
+	
+	LocationTest.class,
+	CartesianCoordinateTest.class,
+	SphericCoordinateTest.class
 })
 public class AllTests {
 
