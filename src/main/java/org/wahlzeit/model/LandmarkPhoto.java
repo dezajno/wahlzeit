@@ -1,9 +1,9 @@
 package org.wahlzeit.model;
 
 import com.google.appengine.repackaged.com.google.type.Date;
-import com.googlecode.objectify.annotation.Entity;
+import com.googlecode.objectify.annotation.Subclass;
 
-@Entity
+@Subclass
 public class LandmarkPhoto extends Photo {
 	protected String country;
 	protected String city;
