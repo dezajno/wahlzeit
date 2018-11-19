@@ -7,7 +7,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 public class CartesianCoordinateTest {
-	private static final double DELTA = 0.00000001;
+	private static final double DELTA = AbstractCoordinate.DEFAULT_COMPARE_EPSILON;
 	
 	private CartesianCoordinate origin;
 	private CartesianCoordinate zero3;
@@ -53,30 +53,6 @@ public class CartesianCoordinateTest {
 	@Test(expected = IllegalArgumentException.class)
 	public void testNullCopy() {
 		new CartesianCoordinate(null);
-	}
-
-	@Test
-	public void testGetX() {
-		assertEquals(0.0, origin.getX(), DELTA);
-		assertEquals(0.0, zero3.getX(), DELTA);
-		assertEquals(1.0, one3.getX(), DELTA);
-		assertEquals(1.0, oneTwoThree.getX(), DELTA);
-	}
-
-	@Test
-	public void testGetY() {
-		assertEquals(0.0, origin.getY(), DELTA);
-		assertEquals(0.0, zero3.getY(), DELTA);
-		assertEquals(1.0, one3.getY(), DELTA);
-		assertEquals(2.0, oneTwoThree.getY(), DELTA);
-	}
-
-	@Test
-	public void testGetZ() {
-		assertEquals(0.0, origin.getZ(), DELTA);
-		assertEquals(0.0, zero3.getZ(), DELTA);
-		assertEquals(1.0, one3.getZ(), DELTA);
-		assertEquals(3.0, oneTwoThree.getZ(), DELTA);
 	}
 
 	@Test

@@ -1,6 +1,6 @@
 package org.wahlzeit.model;
 
-public class SphericCoordinate implements Coordinate {
+public class SphericCoordinate extends AbstractCoordinate {
 	public static SphericCoordinate fromCartesian(CartesianCoordinate cartesianCoordinate) {
 		if(cartesianCoordinate == null) {
 			throw new IllegalArgumentException("cartesianCoordinate may not be null");
@@ -39,64 +39,6 @@ public class SphericCoordinate implements Coordinate {
 	@Override
 	public SphericCoordinate asSphericCoordinate() {
 		return new SphericCoordinate(this);
-	}
-
-	@Override
-	public double getCentralAngle(Coordinate other) {
-		if(other == null) {
-			throw new IllegalArgumentException("other may not be null");
-		}
-		
-		return asCartesianCoordinate().getCentralAngle(other);
-	}
-
-	@Override
-	public double getCartesianDistance(Coordinate other) {
-		if(other == null) {
-			throw new IllegalArgumentException("other may not be null");
-		}
-		
-		return asCartesianCoordinate().getCartesianDistance(other.asCartesianCoordinate());
-	}
-	
-	protected boolean doIsEqual(CartesianCoordinate other) {		
-		return this.asCartesianCoordinate().isEqual(other.asCartesianCoordinate());
-	}
-
-	public boolean isEqual(SphericCoordinate other) {
-		if(other == null) {
-			return false;
-		}
-		
-		return doIsEqual(other.asCartesianCoordinate());
-	}
-
-	@Override
-	public boolean isEqual(Coordinate other) {
-		if(other == null) {
-			return false;
-		}
-		
-		return doIsEqual(other.asCartesianCoordinate());
-	}
-
-	public boolean isEqual(CartesianCoordinate other) {
-		if(other == null) {
-			return false;
-		}
-		
-		return doIsEqual(other);
-	}
-	
-	@Override
-	public boolean equals(Object other) {
-		if(other == null) {
-			return false;
-		} else if(!(other instanceof Coordinate)) {
-			return false;
-		} else {
-			return this.isEqual((Coordinate)other);
-		}
 	}
 	
 	@Override
