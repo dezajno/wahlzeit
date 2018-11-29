@@ -5,9 +5,10 @@ import static org.junit.Assert.assertTrue;
 
 import org.junit.Before;
 import org.junit.Test;
+import org.wahlzeit.utils.NumberUtil;
 
 public class CartesianCoordinateTest {
-	private static final double DELTA = AbstractCoordinate.DEFAULT_COMPARE_EPSILON;
+	private static final double DOUBLE_COMPARE_TOLERANCE = NumberUtil.DOUBLE_COMPARE_TOLERANCE;
 	
 	private CartesianCoordinate origin;
 	private CartesianCoordinate zero3;
@@ -74,10 +75,10 @@ public class CartesianCoordinateTest {
 
 	@Test
 	public void testGetDistance() {
-		assertEquals(0.0, one3.getCartesianDistance(one3c), DELTA);
-		assertEquals(0.0, origin.getCartesianDistance(zero3), DELTA);
-		assertEquals(1.0, oneTwoFour.getCartesianDistance(oneTwoThree), DELTA);
-		assertEquals(Math.sqrt(2.0), one3.getCartesianDistance(oneTwoTwo), DELTA);
+		assertEquals(0.0, one3.getCartesianDistance(one3c), DOUBLE_COMPARE_TOLERANCE);
+		assertEquals(0.0, origin.getCartesianDistance(zero3), DOUBLE_COMPARE_TOLERANCE);
+		assertEquals(1.0, oneTwoFour.getCartesianDistance(oneTwoThree), DOUBLE_COMPARE_TOLERANCE);
+		assertEquals(Math.sqrt(2.0), one3.getCartesianDistance(oneTwoTwo), DOUBLE_COMPARE_TOLERANCE);
 	}
 
 	@Test

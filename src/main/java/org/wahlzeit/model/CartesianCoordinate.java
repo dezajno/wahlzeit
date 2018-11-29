@@ -15,6 +15,8 @@ public class CartesianCoordinate extends AbstractCoordinate {
 			throw new IllegalArgumentException("sphericCoordinate may not be null");
 		}
 		
+		sphericCoordinate.assertClassInvariants();
+		
 		double radius = sphericCoordinate.radius;
 		double polar = sphericCoordinate.polar * Math.PI / 180;
 		double azimuth = sphericCoordinate.azimuth * Math.PI / 180;
@@ -23,7 +25,11 @@ public class CartesianCoordinate extends AbstractCoordinate {
 		double y = radius * Math.sin(polar) * Math.sin(azimuth);
 		double z = radius * Math.cos(polar);
 		
-		return new CartesianCoordinate(x, y, z);
+		CartesianCoordinate cart = new CartesianCoordinate(x, y, z);
+		
+		cart.assertClassInvariants();
+		
+		return cart;
 	}
 	
 	protected final double x, y, z;
@@ -34,6 +40,10 @@ public class CartesianCoordinate extends AbstractCoordinate {
 	 * @param y The y component of the new coordinate
 	 */
 	public CartesianCoordinate(double x, double y, double z) {
+		assertFinite(x, "x");
+		assertFinite(y, "y");
+		assertFinite(z, "z");
+
 		this.x = x;
 		this.y = y;
 		this.z = z;
@@ -48,9 +58,20 @@ public class CartesianCoordinate extends AbstractCoordinate {
 			throw new IllegalArgumentException("other coordinate may not be null");
 		}
 		
+		other.assertClassInvariants();
+		
 		this.x = other.x;
 		this.y = other.y;
 		this.z = other.z;
+	}
+	
+	@Override
+	protected void assertClassInvariants() {
+		super.assertClassInvariants();
+		
+		assert Double.isFinite(x);
+		assert Double.isFinite(y);
+		assert Double.isFinite(z);
 	}
 
 	@Override

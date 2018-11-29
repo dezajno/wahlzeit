@@ -59,6 +59,8 @@ dependencies {
 }
 
 test {
+    enableAssertions=true
+
     filter {
         includeTestsMatching "org.wahlzeit.AllTests"
     }
