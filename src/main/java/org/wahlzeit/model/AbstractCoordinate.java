@@ -13,18 +13,6 @@ public abstract class AbstractCoordinate implements Coordinate {
 		
 	}
 	
-	private static double dot(CartesianCoordinate a, CartesianCoordinate b) {
-		return a.x * b.x + a.y * b.y + a.z * b.z;
-	}
-	
-	private static double length(CartesianCoordinate c) {
-		return Math.sqrt(dot(c, c));
-	}
-	
-	private static CartesianCoordinate minus(CartesianCoordinate a, CartesianCoordinate b) {
-		return new CartesianCoordinate(a.x - b.x, a.y - b.y, a.z - b.z);
-	}
-	
 	protected static void assertFinite(double v, String name) {
 		if(!Double.isFinite(v)) {
 			throw new IllegalArgumentException(name + " must not be NaN or Inf (is " + v + ")");
@@ -34,7 +22,7 @@ public abstract class AbstractCoordinate implements Coordinate {
 	protected double doGetCentralAngle(CartesianCoordinate other) {
 		CartesianCoordinate thisCart = asCartesianCoordinate();
 		
-		return Math.acos(dot(thisCart, other) / (length(thisCart)*length(other))) * 180 / Math.PI;
+		return Math.acos(thisCart.dot(other) / (thisCart.length()*other.length())) * 180 / Math.PI;
 	}
 	
 	@Override
@@ -66,7 +54,7 @@ public abstract class AbstractCoordinate implements Coordinate {
 			throw new IllegalArgumentException("other may not be null");
 		}
 		
-		return length(minus(this.asCartesianCoordinate(), other.asCartesianCoordinate()));
+		return this.asCartesianCoordinate().minus(other.asCartesianCoordinate()).length();
 	}
 	
 	protected boolean areEqual(CartesianCoordinate a, CartesianCoordinate b) {

@@ -65,6 +65,18 @@ public class CartesianCoordinate extends AbstractCoordinate {
 		this.z = other.z;
 	}
 	
+	public double dot(CartesianCoordinate b) {
+		return x * b.x + y * b.y + z * b.z;
+	}
+	
+	public double length() {
+		return Math.sqrt(x*x + y*y + z*z);
+	}
+	
+	public CartesianCoordinate minus(CartesianCoordinate b) {
+		return new CartesianCoordinate(x - b.x, y - b.y, z - b.z);
+	}
+	
 	@Override
 	protected void assertClassInvariants() {
 		super.assertClassInvariants();
