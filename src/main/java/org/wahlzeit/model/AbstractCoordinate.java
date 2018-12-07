@@ -1,6 +1,6 @@
 package org.wahlzeit.model;
 
-import org.wahlzeit.utils.NumberUtil;
+import static org.wahlzeit.utils.AssertionUtil.assertNotNull;
 
 public abstract class AbstractCoordinate implements Coordinate {
 	@Override
@@ -9,14 +9,12 @@ public abstract class AbstractCoordinate implements Coordinate {
 	@Override
 	public abstract SphericCoordinate asSphericCoordinate();
 	
-	protected void assertClassInvariants() {
+	/**
+	 * Asserts that the invariants of this class are still fulfilled. If not, throws an {@link IllegalStateException}
+	 * @throws IllegalStateException if class invariants are violated
+	 */
+	protected void assertClassInvariants() throws IllegalStateException {
 		
-	}
-	
-	protected static void assertFinite(double v, String name) {
-		if(!Double.isFinite(v)) {
-			throw new IllegalArgumentException(name + " must not be NaN or Inf (is " + v + ")");
-		}
 	}
 	
 	protected double doGetCentralAngle(CartesianCoordinate other) {
@@ -29,19 +27,15 @@ public abstract class AbstractCoordinate implements Coordinate {
 	public double getCentralAngle(Coordinate other) {
 		assertClassInvariants();
 		
-		if(other == null) {
-			throw new IllegalArgumentException("other may not be null");
-		}
+		assertNotNull(other, () -> new IllegalArgumentException("other may not be null"));
 		
 		return doGetCentralAngle(other.asCartesianCoordinate());
 	}
 	
 	public double getCentralAngle(CartesianCoordinate other) {
 		assertClassInvariants();
-		
-		if(other == null) {
-			throw new IllegalArgumentException("other may not be null");
-		}
+
+		assertNotNull(other, () -> new IllegalArgumentException("other may not be null"));
 		
 		return doGetCentralAngle(other);
 	}
@@ -49,19 +43,10 @@ public abstract class AbstractCoordinate implements Coordinate {
 	@Override
 	public double getCartesianDistance(Coordinate other) {
 		assertClassInvariants();
-		
-		if(other == null) {
-			throw new IllegalArgumentException("other may not be null");
-		}
+
+		assertNotNull(other, () -> new IllegalArgumentException("other may not be null"));
 		
 		return this.asCartesianCoordinate().minus(other.asCartesianCoordinate()).length();
-	}
-	
-	protected boolean areEqual(CartesianCoordinate a, CartesianCoordinate b) {
-		return
-				NumberUtil.isEqual(a.x, b.x) &&
-				NumberUtil.isEqual(a.y, b.y) &&
-				NumberUtil.isEqual(a.z, b.z);
 	}
 
 	@Override
@@ -72,7 +57,7 @@ public abstract class AbstractCoordinate implements Coordinate {
 			return false;
 		}
 		
-		return areEqual(this.asCartesianCoordinate(), other.asCartesianCoordinate());
+		return this.asCartesianCoordinate().isEqual(other.asCartesianCoordinate());
 	}
 	
 	@Override

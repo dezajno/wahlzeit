@@ -2,11 +2,11 @@ package org.wahlzeit.model;
 
 import org.wahlzeit.utils.NumberUtil;
 
+import static org.wahlzeit.utils.AssertionUtil.*;
+
 public class SphericCoordinate extends AbstractCoordinate {
 	public static SphericCoordinate fromCartesian(CartesianCoordinate cartesianCoordinate) {
-		if(cartesianCoordinate == null) {
-			throw new IllegalArgumentException("cartesianCoordinate may not be null");
-		}
+		assertNotNull(cartesianCoordinate, () -> new IllegalArgumentException("cartesianCoordinate may not be null"));
 		
 		cartesianCoordinate.assertClassInvariants();
 		
@@ -37,9 +37,9 @@ public class SphericCoordinate extends AbstractCoordinate {
 	protected final double radius, polar, azimuth;
 	
 	public SphericCoordinate(double radius, double polar, double azimuth) {
-		assertFinite(radius, "radius");
-		assertFinite(polar, "polar");
-		assertFinite(azimuth, "azimuth");
+		assertFinite(azimuth, (v) -> new IllegalArgumentException("azimuth may not be NaN or Inf (was " + v + ")"));
+		assertFinite(polar, (v) -> new IllegalArgumentException("polar may not be NaN or Inf (was " + v + ")"));
+		assertFinite(radius, (v) -> new IllegalArgumentException("radius may not be NaN or Inf (was " + v + ")"));
 		
 		this.radius = radius;
 		this.polar = polar;
@@ -47,9 +47,7 @@ public class SphericCoordinate extends AbstractCoordinate {
 	}
 	
 	public SphericCoordinate(SphericCoordinate other) {
-		if(other == null) {
-			throw new IllegalArgumentException("other may not be null");
-		}
+		assertNotNull(other, () -> new IllegalArgumentException("other may not be null"));
 		
 		other.assertClassInvariants();
 
@@ -59,12 +57,12 @@ public class SphericCoordinate extends AbstractCoordinate {
 	}
 	
 	@Override
-	protected void assertClassInvariants() {
+	protected void assertClassInvariants() throws IllegalStateException {
 		super.assertClassInvariants();
 		
-		assert Double.isFinite(azimuth);		
-		assert Double.isFinite(polar);		
-		assert Double.isFinite(radius);
+		assertFinite(azimuth, (v) -> new IllegalStateException("azimuth may not become NaN or Inf (was " + v + ")"));
+		assertFinite(polar, (v) -> new IllegalStateException("polar may not become NaN or Inf (was " + v + ")"));
+		assertFinite(radius, (v) -> new IllegalStateException("radius may not become NaN or Inf (was " + v + ")"));
 	}
 	
 	@Override
