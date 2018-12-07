@@ -34,6 +34,8 @@ import org.wahlzeit.services.ObjectManager;
 
 import java.util.Map;
 
+import static org.wahlzeit.utils.AssertionUtil.*;
+
 /**
  * A photo represents a user-provided (uploaded) photo.
  */
@@ -148,6 +150,8 @@ public class Photo extends DataObject {
 	 * @methodtype constructor
 	 */
 	public Photo(PhotoId myId) {
+		assertNotNull(myId, () -> new IllegalArgumentException("myId may not be null"));
+		
 		id = myId;
 
 		incWriteCount();
@@ -157,6 +161,8 @@ public class Photo extends DataObject {
 	 * @methodtype get
 	 */
 	public Image getImage(PhotoSize photoSize) {
+		assertNotNull(photoSize, () -> new IllegalArgumentException("photoSize may not be null"));
+		
 		return images.get(photoSize);
 	}
 
@@ -164,6 +170,9 @@ public class Photo extends DataObject {
 	 * @methodtype set
 	 */
 	public void setImage(PhotoSize photoSize, Image image) {
+		assertNotNull(photoSize, () -> new IllegalArgumentException("photoSize may not be null"));
+		assertNotNull(image, () -> new IllegalArgumentException("image may not be null"));
+		
 		this.images.put(photoSize, image);
 	}
 
@@ -192,6 +201,8 @@ public class Photo extends DataObject {
 	 * @methodtype set
 	 */
 	public void setOwnerId(String newName) {
+		assertNotNull(newName, () -> new IllegalArgumentException("newName may not be null"));
+		
 		ownerId = newName;
 		incWriteCount();
 	}
@@ -200,6 +211,8 @@ public class Photo extends DataObject {
 	 * @methodtype get
 	 */
 	public String getSummary(ModelConfig cfg) {
+		assertNotNull(cfg, () -> new IllegalArgumentException("cfg may not be null"));
+		
 		return cfg.asPhotoSummary(ownerId);
 	}
 
@@ -207,6 +220,8 @@ public class Photo extends DataObject {
 	 * @methodtype get
 	 */
 	public String getCaption(ModelConfig cfg) {
+		assertNotNull(cfg, () -> new IllegalArgumentException("cfg may not be null"));
+		
 		String ownerName = UserManager.getInstance().getUserById(ownerId).getNickName();
 		return cfg.asPhotoCaption(ownerName);
 	}
@@ -237,6 +252,8 @@ public class Photo extends DataObject {
 	 *
 	 */
 	public void setOwnerLanguage(Language newLanguage) {
+		assertNotNull(newLanguage, () -> new IllegalArgumentException("newLanguage may not be null"));
+		
 		ownerLanguage = newLanguage;
 		incWriteCount();
 	}
@@ -245,6 +262,8 @@ public class Photo extends DataObject {
 	 * @methodtype boolean-query
 	 */
 	public boolean hasSameOwner(Photo photo) {
+		assertNotNull(photo, () -> new IllegalArgumentException("photo may not be null"));
+		
 		return photo.getOwnerEmailAddress().equals(ownerEmailAddress);
 	}
 
@@ -259,6 +278,8 @@ public class Photo extends DataObject {
 	 * @methodtype set
 	 */
 	public void setOwnerEmailAddress(EmailAddress newEmailAddress) {
+		assertNotNull(newEmailAddress, () -> new IllegalArgumentException("newEmailAddress may not be null"));
+		
 		ownerEmailAddress = newEmailAddress;
 		incWriteCount();
 	}
@@ -302,6 +323,9 @@ public class Photo extends DataObject {
 	 * @methodtype set
 	 */
 	public void setWidthAndHeight(int newWidth, int newHeight) {
+		assertPredicate((v) -> v > 0, newWidth, (v) -> new IllegalArgumentException("newWidth must be > 0 (was " + v + ")"));
+		assertPredicate((v) -> v > 0, newHeight, (v) -> new IllegalArgumentException("newHeight must be > 0 (was " + v + ")"));
+		
 		width = newWidth;
 		height = newHeight;
 
@@ -316,6 +340,8 @@ public class Photo extends DataObject {
 	 * @methodtype boolean-query
 	 */
 	public boolean hasPhotoSize(PhotoSize size) {
+		assertNotNull(size, () -> new IllegalArgumentException("size may not be null"));
+		
 		return maxPhotoSize.asInt() >= size.asInt();
 	}
 
@@ -367,6 +393,8 @@ public class Photo extends DataObject {
 	 * @methodtype set
 	 */
 	public void setStatus(PhotoStatus newStatus) {
+		assertNotNull(newStatus, () -> new IllegalArgumentException("newStatus may not be null"));
+		
 		status = newStatus;
 		incWriteCount();
 	}
@@ -375,6 +403,8 @@ public class Photo extends DataObject {
 	 * @methodtype boolean-query
 	 */
 	public boolean hasTag(String tag) {
+		assertNotNull(tag, () -> new IllegalArgumentException("tag may not be null"));
+		
 		return tags.hasTag(tag);
 	}
 
@@ -389,6 +419,8 @@ public class Photo extends DataObject {
 	 * @methodtype set
 	 */
 	public void setTags(Tags newTags) {
+		assertNotNull(newTags, () -> new IllegalArgumentException("newTags may not be null"));
+		
 		tags = newTags;
 		incWriteCount();
 	}
@@ -406,6 +438,8 @@ public class Photo extends DataObject {
 	}
 
 	public void setEnding(String ending) {
+		assertNotNull(ending, () -> new IllegalArgumentException("ending may not be null"));
+		
 		this.ending = ending;
 	}
 
