@@ -15,6 +15,11 @@ public class CartesianCoordinate extends AbstractCoordinate {
 	 */
 	public static final CartesianCoordinate ORIGIN = new CartesianCoordinate(0.0, 0.0, 0.0);
 
+	/**
+	 * Creates a CartesianCoordinate from a spheric coordinate
+	 * @param sphericCoordinate the spheric coordinate from which to create a CartesianCoordinate
+	 * @return the created CartesianCoordinate
+	 */
 	public static CartesianCoordinate fromSpheric(SphericCoordinate sphericCoordinate) {
 		assertNotNull(sphericCoordinate, () -> new IllegalArgumentException("sphericCoordinate may not be null"));
 		
@@ -75,15 +80,29 @@ public class CartesianCoordinate extends AbstractCoordinate {
 		assertFinite(z, (v) -> new IllegalStateException("z may not become NaN or Inf (was " + v + ")"));
 	}
 	
+	/**
+	 * Calculates the dot product of this coordinate and the given {@code other} coordinate
+	 * @param other the coordinate to which to calculate the dot product
+	 * @return this.x * other.x + this.y * other.y + this.z * other.z
+	 */
 	public double dot(CartesianCoordinate other) {
 		assertNotNull(other, () -> new IllegalArgumentException("other may not be null"));
 		return x * other.x + y * other.y + z * other.z;
 	}
 	
+	/**
+	 * Calculates the euclidean length (l2 norm) of this coordinate
+	 * @return the euclidean length (l2 norm) of this coordinate
+	 */
 	public double length() {
 		return Math.sqrt(x*x + y*y + z*z);
 	}
 	
+	/**
+	 * Subtracts {@code other} from this coordinate and returns the result
+	 * @param other the coordinate to subtract from this coordinate
+	 * @return this - other
+	 */
 	public CartesianCoordinate minus(CartesianCoordinate other) {
 		assertNotNull(other, () -> new IllegalArgumentException("other may not be null"));
 		return new CartesianCoordinate(x - other.x, y - other.y, z - other.z);
@@ -99,6 +118,11 @@ public class CartesianCoordinate extends AbstractCoordinate {
 		return SphericCoordinate.fromCartesian(this);
 	}
 	
+	/**
+	 * Checks if this cartesian coordinate is equal to the given cartesian coordinate
+	 * @param other the coordinate to compare to this coordiante
+	 * @return true if this coordinate is equal to {@code other}, false otherwise
+	 */
 	public boolean isEqual(CartesianCoordinate other) {
 		if(other == null) {
 			return false;

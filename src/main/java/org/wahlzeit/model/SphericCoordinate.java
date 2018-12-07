@@ -5,6 +5,11 @@ import org.wahlzeit.utils.NumberUtil;
 import static org.wahlzeit.utils.AssertionUtil.*;
 
 public class SphericCoordinate extends AbstractCoordinate {
+	/**
+	 * Creates a SphericCoordinate from a cartesian coordinate
+	 * @param cartesianCoordinate the cartesian coordinate from which to create a SphericCoordinate
+	 * @return the created SphericCoordinate
+	 */
 	public static SphericCoordinate fromCartesian(CartesianCoordinate cartesianCoordinate) {
 		assertNotNull(cartesianCoordinate, () -> new IllegalArgumentException("cartesianCoordinate may not be null"));
 		
@@ -36,6 +41,12 @@ public class SphericCoordinate extends AbstractCoordinate {
 	
 	protected final double radius, polar, azimuth;
 	
+	/**
+	 * Creates a new spheric coordinate with the given {@code radius} and {@code polar}- and {@code azimuth}-angles
+	 * @param radius the radius of the new coordinate
+	 * @param polar the polar angle of the new coordinate
+	 * @param azimuth the azimuth angle of the new coordinate
+	 */
 	public SphericCoordinate(double radius, double polar, double azimuth) {
 		assertFinite(azimuth, (v) -> new IllegalArgumentException("azimuth may not be NaN or Inf (was " + v + ")"));
 		assertFinite(polar, (v) -> new IllegalArgumentException("polar may not be NaN or Inf (was " + v + ")"));
@@ -46,6 +57,10 @@ public class SphericCoordinate extends AbstractCoordinate {
 		this.azimuth = azimuth;
 	}
 	
+	/**
+	 * Creates a copy of the given {@code other} coordinate
+	 * @param other the coordinate of which to create a copy
+	 */
 	public SphericCoordinate(SphericCoordinate other) {
 		assertNotNull(other, () -> new IllegalArgumentException("other may not be null"));
 		
