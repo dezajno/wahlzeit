@@ -13,7 +13,15 @@ public class CartesianCoordinate extends AbstractCoordinate {
 	/**
 	 * The (0,0) coordinate
 	 */
-	public static final CartesianCoordinate ORIGIN = new CartesianCoordinate(0.0, 0.0, 0.0);
+	public static final CartesianCoordinate ORIGIN;
+	
+	static {
+		try {
+			ORIGIN = new CartesianCoordinate(0.0, 0.0, 0.0);
+		} catch (CoordinateException e) {
+			throw new IllegalStateException(e);
+		}
+	}
 
 	/**
 	 * Creates a CartesianCoordinate from a spheric coordinate
@@ -21,7 +29,7 @@ public class CartesianCoordinate extends AbstractCoordinate {
 	 * @return the created CartesianCoordinate
 	 * @throws CoordinateException 
 	 */
-	public static CartesianCoordinate fromSpheric(SphericCoordinate sphericCoordinate) {
+	public static CartesianCoordinate fromSpheric(SphericCoordinate sphericCoordinate) throws CoordinateException {
 		assertNotNull(sphericCoordinate, () -> new IllegalArgumentException("sphericCoordinate may not be null"));
 		
 		double radius = sphericCoordinate.radius;
@@ -49,8 +57,9 @@ public class CartesianCoordinate extends AbstractCoordinate {
 	 * Creates a new coordinate with components {@code x} and {@code y}
 	 * @param x The x component of the new coordinate
 	 * @param y The y component of the new coordinate
+	 * @throws CoordinateException 
 	 */
-	public CartesianCoordinate(double x, double y, double z) {
+	public CartesianCoordinate(double x, double y, double z) throws CoordinateException {
 		assertFinite(x, (v) -> new IllegalArgumentException("x may not be NaN or Inf (was " + v + ")"));
 		assertFinite(y, (v) -> new IllegalArgumentException("y may not be NaN or Inf (was " + v + ")"));
 		assertFinite(z, (v) -> new IllegalArgumentException("z may not be NaN or Inf (was " + v + ")"));
@@ -58,18 +67,23 @@ public class CartesianCoordinate extends AbstractCoordinate {
 		this.x = x;
 		this.y = y;
 		this.z = z;
+		
+		assertClassInvariants();
 	}
 	
 	/**
 	 * Creates a copy of another coordinate
 	 * @param other The coordinate to create a copy of
+	 * @throws CoordinateException 
 	 */
-	public CartesianCoordinate(CartesianCoordinate other) {
+	public CartesianCoordinate(CartesianCoordinate other) throws CoordinateException {
 		assertNotNull(other, () -> new IllegalArgumentException("other coordinate may not be null"));
 		
 		this.x = other.x;
 		this.y = other.y;
 		this.z = other.z;
+		
+		assertClassInvariants();
 	}
 	
 	@Override
@@ -103,8 +117,9 @@ public class CartesianCoordinate extends AbstractCoordinate {
 	 * Subtracts {@code other} from this coordinate and returns the result
 	 * @param other the coordinate to subtract from this coordinate
 	 * @return this - other
+	 * @throws CoordinateException 
 	 */
-	public CartesianCoordinate minus(CartesianCoordinate other) {
+	public CartesianCoordinate minus(CartesianCoordinate other) throws CoordinateException {
 		assertNotNull(other, () -> new IllegalArgumentException("other may not be null"));
 		return new CartesianCoordinate(x - other.x, y - other.y, z - other.z);
 	}
@@ -115,7 +130,7 @@ public class CartesianCoordinate extends AbstractCoordinate {
 	}
 
 	@Override
-	public SphericCoordinate asSphericCoordinate() {
+	public SphericCoordinate asSphericCoordinate() throws CoordinateException {
 		return SphericCoordinate.fromCartesian(this);
 	}
 	

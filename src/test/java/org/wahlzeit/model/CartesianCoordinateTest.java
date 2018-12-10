@@ -25,7 +25,7 @@ public class CartesianCoordinateTest {
 	private Object object;
 	
 	@Before
-	public void setup() {
+	public void setup() throws CoordinateException {
 		origin = CartesianCoordinate.ORIGIN;
 		zero3 = new CartesianCoordinate(0.0, 0.0, 0.0);
 		one3 = new CartesianCoordinate(1.0, 1.0, 1.0);
@@ -52,7 +52,7 @@ public class CartesianCoordinateTest {
 	}
 	
 	@Test(expected = IllegalArgumentException.class)
-	public void testNullCopy() {
+	public void testNullCopy() throws CoordinateException {
 		new CartesianCoordinate(null);
 	}
 
@@ -74,7 +74,7 @@ public class CartesianCoordinateTest {
 	}
 
 	@Test
-	public void testGetDistance() {
+	public void testGetDistance() throws CoordinateException {
 		assertEquals(0.0, one3.getCartesianDistance(one3c), DOUBLE_COMPARE_TOLERANCE);
 		assertEquals(0.0, origin.getCartesianDistance(zero3), DOUBLE_COMPARE_TOLERANCE);
 		assertEquals(1.0, oneTwoFour.getCartesianDistance(oneTwoThree), DOUBLE_COMPARE_TOLERANCE);
@@ -82,7 +82,7 @@ public class CartesianCoordinateTest {
 	}
 
 	@Test
-	public void testAsSpheric() {
+	public void testAsSpheric() throws CoordinateException {
 		assertTrue(origin.asSphericCoordinate() instanceof SphericCoordinate);
 		assertEquals(x, x.asSphericCoordinate().asCartesianCoordinate());
 		assertEquals(y, y.asSphericCoordinate().asCartesianCoordinate());

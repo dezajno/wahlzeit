@@ -11,7 +11,7 @@ public class SphericCoordinate extends AbstractCoordinate {
 	 * @return the created SphericCoordinate
 	 * @throws CoordinateException 
 	 */
-	public static SphericCoordinate fromCartesian(CartesianCoordinate cartesianCoordinate) {
+	public static SphericCoordinate fromCartesian(CartesianCoordinate cartesianCoordinate) throws CoordinateException {
 		assertNotNull(cartesianCoordinate, () -> new IllegalArgumentException("cartesianCoordinate may not be null"));
 		
 		double x = cartesianCoordinate.x;
@@ -45,8 +45,9 @@ public class SphericCoordinate extends AbstractCoordinate {
 	 * @param radius the radius of the new coordinate
 	 * @param polar the polar angle of the new coordinate
 	 * @param azimuth the azimuth angle of the new coordinate
+	 * @throws CoordinateException 
 	 */
-	public SphericCoordinate(double radius, double polar, double azimuth) {
+	public SphericCoordinate(double radius, double polar, double azimuth) throws CoordinateException {
 		assertFinite(azimuth, (v) -> new IllegalArgumentException("azimuth may not be NaN or Inf (was " + v + ")"));
 		assertFinite(polar, (v) -> new IllegalArgumentException("polar may not be NaN or Inf (was " + v + ")"));
 		assertFinite(radius, (v) -> new IllegalArgumentException("radius may not be NaN or Inf (was " + v + ")"));
@@ -54,6 +55,8 @@ public class SphericCoordinate extends AbstractCoordinate {
 		this.radius = radius;
 		this.polar = polar;
 		this.azimuth = azimuth;
+		
+		assertClassInvariants();
 	}
 	
 	/**
@@ -78,7 +81,7 @@ public class SphericCoordinate extends AbstractCoordinate {
 	}
 	
 	@Override
-	public CartesianCoordinate asCartesianCoordinate() {
+	public CartesianCoordinate asCartesianCoordinate() throws CoordinateException {
 		return CartesianCoordinate.fromSpheric(this);
 	}
 

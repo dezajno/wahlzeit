@@ -12,7 +12,7 @@ public class LocationTest {
 	private Location otherCoordGiven;
 	
 	@Before
-	public void setup() {
+	public void setup() throws CoordinateException {
 		CartesianCoordinate testCoord = new CartesianCoordinate(4.2, 0.1, 3.4);
 		
 		someCoord = new Location(testCoord);

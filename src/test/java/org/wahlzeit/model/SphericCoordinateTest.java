@@ -21,7 +21,7 @@ public class SphericCoordinateTest {
 	private CartesianCoordinate z;
 	
 	@Before
-	public void setup() {
+	public void setup() throws CoordinateException {
 		c1 = new SphericCoordinate(1, 33, 33);
 		equalToC1 = new SphericCoordinate(1, 33, 33);
 		
@@ -45,13 +45,13 @@ public class SphericCoordinateTest {
 	}
 	
 	@Test
-	public void testGetCentralAngle() {
+	public void testGetCentralAngle() throws CoordinateException {
 		assertEquals(90, r1p0a0.getCentralAngle(r1p90a0), DELTA);
 		assertEquals(90, r1p90a0.getCentralAngle(r1p0a0), DELTA);
 	}
 	
 	@Test
-	public void testAsCartesianCoordinate() {
+	public void testAsCartesianCoordinate() throws CoordinateException {
 		assertEquals(r1p0a0, r1p0a0.asCartesianCoordinate().asSphericCoordinate());
 		assertEquals(r1p90a0, r1p90a0.asCartesianCoordinate().asSphericCoordinate());
 		assertEquals(r1p90a90, r1p90a90.asCartesianCoordinate().asSphericCoordinate());
