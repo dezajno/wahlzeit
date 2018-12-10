@@ -9,11 +9,10 @@ public class SphericCoordinate extends AbstractCoordinate {
 	 * Creates a SphericCoordinate from a cartesian coordinate
 	 * @param cartesianCoordinate the cartesian coordinate from which to create a SphericCoordinate
 	 * @return the created SphericCoordinate
+	 * @throws CoordinateException 
 	 */
 	public static SphericCoordinate fromCartesian(CartesianCoordinate cartesianCoordinate) {
 		assertNotNull(cartesianCoordinate, () -> new IllegalArgumentException("cartesianCoordinate may not be null"));
-		
-		cartesianCoordinate.assertClassInvariants();
 		
 		double x = cartesianCoordinate.x;
 		double y = cartesianCoordinate.y;
@@ -28,13 +27,13 @@ public class SphericCoordinate extends AbstractCoordinate {
 			azimuth = Math.atan2(y, x) * 180 / Math.PI;
 		}
 		
+		// According to the javadoc of Math.cos and Math.atan2, violation of the following
+		// conditions is not possible.
 		assert Double.isFinite(radius);
 		assert Double.isFinite(polar);
 		assert Double.isFinite(azimuth);
 		
 		SphericCoordinate spheric = new SphericCoordinate(radius, polar, azimuth);
-		
-		spheric.assertClassInvariants();
 		
 		return spheric;
 	}
@@ -63,8 +62,6 @@ public class SphericCoordinate extends AbstractCoordinate {
 	 */
 	public SphericCoordinate(SphericCoordinate other) {
 		assertNotNull(other, () -> new IllegalArgumentException("other may not be null"));
-		
-		other.assertClassInvariants();
 
 		this.radius = other.radius;
 		this.polar = other.polar;
@@ -72,12 +69,12 @@ public class SphericCoordinate extends AbstractCoordinate {
 	}
 	
 	@Override
-	protected void assertClassInvariants() throws IllegalStateException {
+	protected void assertClassInvariants() throws CoordinateException {
 		super.assertClassInvariants();
 		
-		assertFinite(azimuth, (v) -> new IllegalStateException("azimuth may not become NaN or Inf (was " + v + ")"));
-		assertFinite(polar, (v) -> new IllegalStateException("polar may not become NaN or Inf (was " + v + ")"));
-		assertFinite(radius, (v) -> new IllegalStateException("radius may not become NaN or Inf (was " + v + ")"));
+		assertFinite(azimuth, (v) -> new CoordinateException("azimuth may not become NaN or Inf (was " + v + ")"));
+		assertFinite(polar, (v) -> new CoordinateException("polar may not become NaN or Inf (was " + v + ")"));
+		assertFinite(radius, (v) -> new CoordinateException("radius may not become NaN or Inf (was " + v + ")"));
 	}
 	
 	@Override

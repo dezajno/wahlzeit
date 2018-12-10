@@ -13,7 +13,7 @@ public abstract class AbstractCoordinate implements Coordinate {
 	 * Asserts that the invariants of this class are still fulfilled. If not, throws an {@link IllegalStateException}
 	 * @throws IllegalStateException if class invariants are violated
 	 */
-	protected void assertClassInvariants() throws IllegalStateException {
+	protected void assertClassInvariants() throws CoordinateException {
 		
 	}
 	
@@ -25,16 +25,12 @@ public abstract class AbstractCoordinate implements Coordinate {
 	
 	@Override
 	public double getCentralAngle(Coordinate other) {
-		assertClassInvariants();
-		
 		assertNotNull(other, () -> new IllegalArgumentException("other may not be null"));
 		
 		return doGetCentralAngle(other.asCartesianCoordinate());
 	}
 	
 	public double getCentralAngle(CartesianCoordinate other) {
-		assertClassInvariants();
-
 		assertNotNull(other, () -> new IllegalArgumentException("other may not be null"));
 		
 		return doGetCentralAngle(other);
@@ -42,8 +38,6 @@ public abstract class AbstractCoordinate implements Coordinate {
 
 	@Override
 	public double getCartesianDistance(Coordinate other) {
-		assertClassInvariants();
-
 		assertNotNull(other, () -> new IllegalArgumentException("other may not be null"));
 		
 		return this.asCartesianCoordinate().minus(other.asCartesianCoordinate()).length();
@@ -51,8 +45,6 @@ public abstract class AbstractCoordinate implements Coordinate {
 
 	@Override
 	public boolean isEqual(Coordinate other) {
-		assertClassInvariants();
-		
 		if(other == null) {
 			return false;
 		}

@@ -19,11 +19,10 @@ public class CartesianCoordinate extends AbstractCoordinate {
 	 * Creates a CartesianCoordinate from a spheric coordinate
 	 * @param sphericCoordinate the spheric coordinate from which to create a CartesianCoordinate
 	 * @return the created CartesianCoordinate
+	 * @throws CoordinateException 
 	 */
 	public static CartesianCoordinate fromSpheric(SphericCoordinate sphericCoordinate) {
 		assertNotNull(sphericCoordinate, () -> new IllegalArgumentException("sphericCoordinate may not be null"));
-		
-		sphericCoordinate.assertClassInvariants();
 		
 		double radius = sphericCoordinate.radius;
 		double polar = sphericCoordinate.polar * Math.PI / 180;
@@ -33,9 +32,13 @@ public class CartesianCoordinate extends AbstractCoordinate {
 		double y = radius * Math.sin(polar) * Math.sin(azimuth);
 		double z = radius * Math.cos(polar);
 		
-		CartesianCoordinate cart = new CartesianCoordinate(x, y, z);
+		// According to the javadoc of Math.cos and Math.sin, violation of the following
+		// conditions is not possible.
+		assert Double.isFinite(x);
+		assert Double.isFinite(y);
+		assert Double.isFinite(z);
 		
-		cart.assertClassInvariants();
+		CartesianCoordinate cart = new CartesianCoordinate(x, y, z);
 		
 		return cart;
 	}
@@ -64,20 +67,18 @@ public class CartesianCoordinate extends AbstractCoordinate {
 	public CartesianCoordinate(CartesianCoordinate other) {
 		assertNotNull(other, () -> new IllegalArgumentException("other coordinate may not be null"));
 		
-		other.assertClassInvariants();
-		
 		this.x = other.x;
 		this.y = other.y;
 		this.z = other.z;
 	}
 	
 	@Override
-	protected void assertClassInvariants() throws IllegalStateException {
+	protected void assertClassInvariants() throws CoordinateException {
 		super.assertClassInvariants();
 		
-		assertFinite(x, (v) -> new IllegalStateException("x may not become NaN or Inf (was " + v + ")"));
-		assertFinite(y, (v) -> new IllegalStateException("y may not become NaN or Inf (was " + v + ")"));
-		assertFinite(z, (v) -> new IllegalStateException("z may not become NaN or Inf (was " + v + ")"));
+		assertFinite(x, (v) -> new CoordinateException("x may not become NaN or Inf (was " + v + ")"));
+		assertFinite(y, (v) -> new CoordinateException("y may not become NaN or Inf (was " + v + ")"));
+		assertFinite(z, (v) -> new CoordinateException("z may not become NaN or Inf (was " + v + ")"));
 	}
 	
 	/**
