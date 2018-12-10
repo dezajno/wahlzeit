@@ -1,10 +1,14 @@
 package org.wahlzeit.model;
 
-import org.wahlzeit.utils.NumberUtil;
+import static org.wahlzeit.utils.AssertionUtil.assertFinite;
+import static org.wahlzeit.utils.AssertionUtil.assertNotNull;
 
-import static org.wahlzeit.utils.AssertionUtil.*;
+import org.wahlzeit.utils.NumberUtil;
+import org.wahlzeit.utils.ObjectPool;
 
 public class SphericCoordinate extends AbstractCoordinate {
+	protected static final ObjectPool<SphericCoordinate> POOL = new ObjectPool<>();
+
 	/**
 	 * Creates a SphericCoordinate from a cartesian coordinate
 	 * @param cartesianCoordinate the cartesian coordinate from which to create a SphericCoordinate
@@ -36,6 +40,10 @@ public class SphericCoordinate extends AbstractCoordinate {
 		SphericCoordinate spheric = new SphericCoordinate(radius, polar, azimuth);
 		
 		return spheric;
+	}
+	
+	public static SphericCoordinate getInstance(double radius, double polar, double azimuth) throws CoordinateException {
+		return POOL.create(new SphericCoordinate(radius, polar, azimuth));
 	}
 	
 	protected final double radius, polar, azimuth;

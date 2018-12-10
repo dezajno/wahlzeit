@@ -4,12 +4,15 @@ import static org.wahlzeit.utils.AssertionUtil.assertFinite;
 import static org.wahlzeit.utils.AssertionUtil.assertNotNull;
 
 import org.wahlzeit.utils.NumberUtil;
+import org.wahlzeit.utils.ObjectPool;
 
 /**
  * Represents a 2D cartesian coordinate with double precision
  *
  */
 public class CartesianCoordinate extends AbstractCoordinate {
+	protected static final ObjectPool<CartesianCoordinate> POOL = new ObjectPool<>();
+	
 	/**
 	 * The (0,0) coordinate
 	 */
@@ -51,6 +54,10 @@ public class CartesianCoordinate extends AbstractCoordinate {
 		return cart;
 	}
 	
+	public static CartesianCoordinate getInstance(double x, double y, double z) throws CoordinateException {
+		return POOL.create(new CartesianCoordinate(x, y, z));
+	}
+	
 	protected final double x, y, z;
 	
 	/**
@@ -59,7 +66,7 @@ public class CartesianCoordinate extends AbstractCoordinate {
 	 * @param y The y component of the new coordinate
 	 * @throws CoordinateException 
 	 */
-	public CartesianCoordinate(double x, double y, double z) throws CoordinateException {
+	protected CartesianCoordinate(double x, double y, double z) throws CoordinateException {
 		assertFinite(x, (v) -> new IllegalArgumentException("x may not be NaN or Inf (was " + v + ")"));
 		assertFinite(y, (v) -> new IllegalArgumentException("y may not be NaN or Inf (was " + v + ")"));
 		assertFinite(z, (v) -> new IllegalArgumentException("z may not be NaN or Inf (was " + v + ")"));
@@ -76,7 +83,7 @@ public class CartesianCoordinate extends AbstractCoordinate {
 	 * @param other The coordinate to create a copy of
 	 * @throws CoordinateException 
 	 */
-	public CartesianCoordinate(CartesianCoordinate other) throws CoordinateException {
+	protected CartesianCoordinate(CartesianCoordinate other) throws CoordinateException {
 		assertNotNull(other, () -> new IllegalArgumentException("other coordinate may not be null"));
 		
 		this.x = other.x;
