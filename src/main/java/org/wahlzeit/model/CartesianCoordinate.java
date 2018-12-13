@@ -3,6 +3,8 @@ package org.wahlzeit.model;
 import static org.wahlzeit.utils.AssertionUtil.assertFinite;
 import static org.wahlzeit.utils.AssertionUtil.assertNotNull;
 
+import java.util.Objects;
+
 import org.wahlzeit.utils.NumberUtil;
 import org.wahlzeit.utils.ObjectPool;
 
@@ -12,19 +14,6 @@ import org.wahlzeit.utils.ObjectPool;
  */
 public class CartesianCoordinate extends AbstractCoordinate {
 	protected static final ObjectPool<CartesianCoordinate> POOL = new ObjectPool<>();
-	
-	/**
-	 * The (0,0) coordinate
-	 */
-	public static final CartesianCoordinate ORIGIN;
-	
-	static {
-		try {
-			ORIGIN = new CartesianCoordinate(0.0, 0.0, 0.0);
-		} catch (CoordinateException e) {
-			throw new IllegalStateException(e);
-		}
-	}
 
 	/**
 	 * Creates a CartesianCoordinate from a spheric coordinate
@@ -49,13 +38,21 @@ public class CartesianCoordinate extends AbstractCoordinate {
 		assert Double.isFinite(y);
 		assert Double.isFinite(z);
 		
-		CartesianCoordinate cart = new CartesianCoordinate(x, y, z);
+		CartesianCoordinate cart = CartesianCoordinate.getInstance(x, y, z);
 		
 		return cart;
 	}
 	
 	public static CartesianCoordinate getInstance(double x, double y, double z) throws CoordinateException {
-		return POOL.create(new CartesianCoordinate(x, y, z));
+		assertFinite(x, (v) -> new IllegalArgumentException("x may not be NaN or Inf (was " + v + ")"));
+		assertFinite(y, (v) -> new IllegalArgumentException("y may not be NaN or Inf (was " + v + ")"));
+		assertFinite(z, (v) -> new IllegalArgumentException("z may not be NaN or Inf (was " + v + ")"));
+		
+		CartesianCoordinate coord = POOL.storeOrGet(new CartesianCoordinate(x, y, z));
+		
+		coord.assertClassInvariants();
+		
+		return coord;
 	}
 	
 	protected final double x, y, z;
@@ -67,30 +64,9 @@ public class CartesianCoordinate extends AbstractCoordinate {
 	 * @throws CoordinateException 
 	 */
 	protected CartesianCoordinate(double x, double y, double z) throws CoordinateException {
-		assertFinite(x, (v) -> new IllegalArgumentException("x may not be NaN or Inf (was " + v + ")"));
-		assertFinite(y, (v) -> new IllegalArgumentException("y may not be NaN or Inf (was " + v + ")"));
-		assertFinite(z, (v) -> new IllegalArgumentException("z may not be NaN or Inf (was " + v + ")"));
-
 		this.x = x;
 		this.y = y;
 		this.z = z;
-		
-		assertClassInvariants();
-	}
-	
-	/**
-	 * Creates a copy of another coordinate
-	 * @param other The coordinate to create a copy of
-	 * @throws CoordinateException 
-	 */
-	protected CartesianCoordinate(CartesianCoordinate other) throws CoordinateException {
-		assertNotNull(other, () -> new IllegalArgumentException("other coordinate may not be null"));
-		
-		this.x = other.x;
-		this.y = other.y;
-		this.z = other.z;
-		
-		assertClassInvariants();
 	}
 	
 	@Override
@@ -128,7 +104,7 @@ public class CartesianCoordinate extends AbstractCoordinate {
 	 */
 	public CartesianCoordinate minus(CartesianCoordinate other) throws CoordinateException {
 		assertNotNull(other, () -> new IllegalArgumentException("other may not be null"));
-		return new CartesianCoordinate(x - other.x, y - other.y, z - other.z);
+		return CartesianCoordinate.getInstance(x - other.x, y - other.y, z - other.z);
 	}
 
 	@Override
@@ -160,5 +136,10 @@ public class CartesianCoordinate extends AbstractCoordinate {
 	@Override
 	public String toString() {
 		return String.format("%s(%.2f, %.2f, %.2f)", this.getClass().getSimpleName(), x, y, z);
+	}
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(x, y, z);
 	}
 }

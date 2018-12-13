@@ -10,7 +10,7 @@ public class ObjectPool<T> {
 		
 	}
 	
-	public synchronized T create(T newObj) {
+	public synchronized T storeOrGet(T newObj) {
 		T obj = objs.get(newObj);
 		if(obj == null) {
 			obj = newObj;

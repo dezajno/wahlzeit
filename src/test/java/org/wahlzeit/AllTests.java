@@ -24,7 +24,6 @@ import org.wahlzeit.utils.VersionTest;
 
 @RunWith(Suite.class)
 @SuiteClasses({
-	// TODO
 	TellFriendTest.class,
 	
 	AccessRightsTest.class,

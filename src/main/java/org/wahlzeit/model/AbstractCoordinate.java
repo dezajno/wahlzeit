@@ -66,4 +66,7 @@ public abstract class AbstractCoordinate implements Coordinate {
 			return this.isEqual((Coordinate)other);
 		}
 	}
+	
+	@Override
+	public abstract int hashCode();
 }

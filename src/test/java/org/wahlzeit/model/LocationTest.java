@@ -13,11 +13,11 @@ public class LocationTest {
 	
 	@Before
 	public void setup() throws CoordinateException {
-		CartesianCoordinate testCoord = new CartesianCoordinate(4.2, 0.1, 3.4);
+		CartesianCoordinate testCoord = CartesianCoordinate.getInstance(4.2, 0.1, 3.4);
 		
 		someCoord = new Location(testCoord);
 		someCoordCopied = new Location(someCoord);
-		otherCoordGiven = new Location(CartesianCoordinate.ORIGIN);
+		otherCoordGiven = new Location(CartesianCoordinate.getInstance(5.0, 2.0, 4.2));
 	}
 	
 	@Test

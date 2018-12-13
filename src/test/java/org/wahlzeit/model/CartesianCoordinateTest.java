@@ -26,17 +26,17 @@ public class CartesianCoordinateTest {
 	
 	@Before
 	public void setup() throws CoordinateException {
-		origin = CartesianCoordinate.ORIGIN;
-		zero3 = new CartesianCoordinate(0.0, 0.0, 0.0);
-		one3 = new CartesianCoordinate(1.0, 1.0, 1.0);
-		one3c = new CartesianCoordinate(one3);
-		oneTwoThree = new CartesianCoordinate(1.0, 2.0, 3.0);
-		oneTwoFour = new CartesianCoordinate(1.0, 2.0, 4.0);
-		oneTwoTwo = new CartesianCoordinate(1.0, 2.0, 2.0);
+		origin = CartesianCoordinate.getInstance(0.0, 0.0, 0.0);
+		zero3 = CartesianCoordinate.getInstance(0.0, 0.0, 0.0);
+		one3 = CartesianCoordinate.getInstance(1.0, 1.0, 1.0);
+		one3c = CartesianCoordinate.getInstance(1.0, 1.0, 1.0);
+		oneTwoThree = CartesianCoordinate.getInstance(1.0, 2.0, 3.0);
+		oneTwoFour = CartesianCoordinate.getInstance(1.0, 2.0, 4.0);
+		oneTwoTwo = CartesianCoordinate.getInstance(1.0, 2.0, 2.0);
 		
-		x = new CartesianCoordinate(1, 0, 0);
-		y = new CartesianCoordinate(0, 1, 0);
-		z = new CartesianCoordinate(0, 0, 1);
+		x = CartesianCoordinate.getInstance(1, 0, 0);
+		y = CartesianCoordinate.getInstance(0, 1, 0);
+		z = CartesianCoordinate.getInstance(0, 0, 1);
 		
 		object = new Object();
 	}
@@ -46,14 +46,38 @@ public class CartesianCoordinateTest {
 		assertEquals(origin, zero3);
 	}
 	
-	@Test
-	public void testCopy() {
-		assertEquals(one3, one3c);
+	@Test(expected = IllegalArgumentException.class)
+	public void testNaN() throws CoordinateException {
+		CartesianCoordinate.getInstance(Double.NaN, 0.0, 0.0);
 	}
 	
 	@Test(expected = IllegalArgumentException.class)
-	public void testNullCopy() throws CoordinateException {
-		new CartesianCoordinate(null);
+	public void testPositiveInfinity() throws CoordinateException {
+		CartesianCoordinate.getInstance(Double.POSITIVE_INFINITY, 0.0, 0.0);
+	}
+	
+	@Test(expected = IllegalArgumentException.class)
+	public void testNegativeInfinity() throws CoordinateException {
+		CartesianCoordinate.getInstance(Double.NEGATIVE_INFINITY, 0.0, 0.0);
+	}
+	
+	@Test
+	public void testShared() throws CoordinateException {
+		assertTrue(one3 == one3c);
+		
+		for(CartesianCoordinate c : new CartesianCoordinate[] {
+			origin,
+			zero3,
+			one3,
+			oneTwoThree,
+			oneTwoFour,
+			oneTwoTwo,
+			x,
+			y,
+			z
+		}) {
+			assertTrue(c == CartesianCoordinate.getInstance(c.x, c.y, c.z));
+		}
 	}
 
 	@Test

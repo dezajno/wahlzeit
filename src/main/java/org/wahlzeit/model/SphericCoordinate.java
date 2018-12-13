@@ -3,6 +3,8 @@ package org.wahlzeit.model;
 import static org.wahlzeit.utils.AssertionUtil.assertFinite;
 import static org.wahlzeit.utils.AssertionUtil.assertNotNull;
 
+import java.util.Objects;
+
 import org.wahlzeit.utils.NumberUtil;
 import org.wahlzeit.utils.ObjectPool;
 
@@ -37,13 +39,21 @@ public class SphericCoordinate extends AbstractCoordinate {
 		assert Double.isFinite(polar);
 		assert Double.isFinite(azimuth);
 		
-		SphericCoordinate spheric = new SphericCoordinate(radius, polar, azimuth);
+		SphericCoordinate spheric = SphericCoordinate.getInstance(radius, polar, azimuth);
 		
 		return spheric;
 	}
 	
 	public static SphericCoordinate getInstance(double radius, double polar, double azimuth) throws CoordinateException {
-		return POOL.create(new SphericCoordinate(radius, polar, azimuth));
+		assertFinite(azimuth, (v) -> new IllegalArgumentException("azimuth may not be NaN or Inf (was " + v + ")"));
+		assertFinite(polar, (v) -> new IllegalArgumentException("polar may not be NaN or Inf (was " + v + ")"));
+		assertFinite(radius, (v) -> new IllegalArgumentException("radius may not be NaN or Inf (was " + v + ")"));
+		
+		SphericCoordinate coord = POOL.storeOrGet(new SphericCoordinate(radius, polar, azimuth));
+		
+		coord.assertClassInvariants();
+		
+		return coord;
 	}
 	
 	protected final double radius, polar, azimuth;
@@ -55,28 +65,10 @@ public class SphericCoordinate extends AbstractCoordinate {
 	 * @param azimuth the azimuth angle of the new coordinate
 	 * @throws CoordinateException 
 	 */
-	public SphericCoordinate(double radius, double polar, double azimuth) throws CoordinateException {
-		assertFinite(azimuth, (v) -> new IllegalArgumentException("azimuth may not be NaN or Inf (was " + v + ")"));
-		assertFinite(polar, (v) -> new IllegalArgumentException("polar may not be NaN or Inf (was " + v + ")"));
-		assertFinite(radius, (v) -> new IllegalArgumentException("radius may not be NaN or Inf (was " + v + ")"));
-		
+	protected SphericCoordinate(double radius, double polar, double azimuth) throws CoordinateException {
 		this.radius = radius;
 		this.polar = polar;
 		this.azimuth = azimuth;
-		
-		assertClassInvariants();
-	}
-	
-	/**
-	 * Creates a copy of the given {@code other} coordinate
-	 * @param other the coordinate of which to create a copy
-	 */
-	public SphericCoordinate(SphericCoordinate other) {
-		assertNotNull(other, () -> new IllegalArgumentException("other may not be null"));
-
-		this.radius = other.radius;
-		this.polar = other.polar;
-		this.azimuth = other.azimuth;
 	}
 	
 	@Override
@@ -95,11 +87,16 @@ public class SphericCoordinate extends AbstractCoordinate {
 
 	@Override
 	public SphericCoordinate asSphericCoordinate() {
-		return new SphericCoordinate(this);
+		return this;
 	}
 	
 	@Override
 	public String toString() {
 		return String.format("%s(%.2f, %.2f, %.2f)", this.getClass().getSimpleName(), radius, polar, azimuth);
+	}
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(radius, polar, azimuth);
 	}
 }
