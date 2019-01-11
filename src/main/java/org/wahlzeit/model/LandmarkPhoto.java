@@ -3,6 +3,12 @@ package org.wahlzeit.model;
 import com.google.appengine.repackaged.com.google.type.Date;
 import com.googlecode.objectify.annotation.Subclass;
 
+@PatternInstance(
+	patternName = "Abstract Factory",
+	participants = {
+		"ConcreteProduct"
+	}
+)
 @Subclass
 public class LandmarkPhoto extends Photo {
 	protected String country;

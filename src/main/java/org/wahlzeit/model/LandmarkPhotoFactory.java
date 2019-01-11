@@ -1,5 +1,11 @@
 package org.wahlzeit.model;
 
+@PatternInstance(
+	patternName = "Abstract Factory",
+	participants = {
+		"ConcreteFactory"
+	}
+)
 public class LandmarkPhotoFactory extends PhotoFactory {
 	/**
 	 * @methodtype factory

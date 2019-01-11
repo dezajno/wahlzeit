@@ -43,6 +43,13 @@ import java.util.logging.Logger;
 /**
  * A photo manager provides access to and manages photos.
  */
+
+@PatternInstance(
+	patternName = "Singleton",
+	participants = {
+		"Singleton"
+	}
+)
 public class PhotoManager extends ObjectManager {
 
 	private static final Logger log = Logger.getLogger(PhotoManager.class.getName());
