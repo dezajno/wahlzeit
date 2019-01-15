@@ -1,6 +1,7 @@
 package org.wahlzeit.model;
 
 import com.google.appengine.repackaged.com.google.type.Date;
+import com.googlecode.objectify.annotation.Ignore;
 import com.googlecode.objectify.annotation.Subclass;
 
 @PatternInstance(
@@ -15,6 +16,8 @@ public class LandmarkPhoto extends Photo {
 	protected String city;
 	protected int metersTall;
 	protected Date dateBuilt;
+	@Ignore
+	protected Landmark landmark;
 	
 	public LandmarkPhoto() {
 		super();

@@ -9,6 +9,7 @@ import org.wahlzeit.model.CartesianCoordinateTest;
 import org.wahlzeit.model.FlagReasonTest;
 import org.wahlzeit.model.GenderTest;
 import org.wahlzeit.model.GuestTest;
+import org.wahlzeit.model.LandmarkTypeTest;
 import org.wahlzeit.model.LocationTest;
 import org.wahlzeit.model.PhotoFilterTest;
 import org.wahlzeit.model.PhotoGlobalsTest;
@@ -47,7 +48,9 @@ import org.wahlzeit.utils.VersionTest;
 	
 	LocationTest.class,
 	CartesianCoordinateTest.class,
-	SphericCoordinateTest.class
+	SphericCoordinateTest.class,
+	
+	LandmarkTypeTest.class
 })
 public class AllTests {
 
